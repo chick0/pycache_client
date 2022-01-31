@@ -35,17 +35,14 @@ class Client:
 
         return payload
 
-    def set(self, key: str, value: bytes) -> str:
+    def set(self, key: str, value: bytes) -> bool:
         payload = utils.payload_builder(
             command="SET",
             key=key,
             value=value
         )
 
-        return {
-            "63726561746564": "CREATED",
-            "75706461746564": "UPDATED"
-        }.get(self._send(payload=payload).hex(), "undefined")
+        return self._send(payload=payload).hex() == "75706461746564"
 
     def get(self, key: str) -> bytes:
         payload = utils.payload_builder(
