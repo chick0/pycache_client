@@ -42,7 +42,8 @@ class Client:
             value=value
         )
 
-        return self._send(payload=payload).hex() == "75706461746564"
+        length = self._send(payload=payload)
+        return int.from_bytes(length, "little") == len(value)
 
     def get(self, key: str) -> bytes:
         payload = utils.payload_builder(
